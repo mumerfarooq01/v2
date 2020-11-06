@@ -1,0 +1,46 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Events</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/dashboard/main">
+                                <i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Schedule</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header container-fluid">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h4>Surgeon Schedule</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <!-- <button mat-raised-button color="primary" (click)="addNewEventcurrent()">Add Schedule</button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-12 col-sm-12">
+                                <div class="panel-body">
+                                    <full-calendar [firstDay]="1" [events]="calendarEvents" (eventClick)="eventClick($event)" (eventRender)="handleEventRender($event)" defaultView="dayGridMonth" [plugins]="calendarPlugins" (dateClick)="addNewEvent($event)"></full-calendar>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

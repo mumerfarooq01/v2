@@ -1,0 +1,69 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+
+            <form class="login100-form validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <span class="login100-form-title pb-5">
+                    <img src="assets/images/logo.png" class="img-fluid m-b-20" style="width: 100px;" />
+                    <br>
+                <span style="font-size: 15px;;">ORRCA - Online Referral - Rapid Clinic Access</span>
+                <br> Login
+                </span>
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>MSP</mat-label>
+                            <input mask="00000" matInput type="text" formControlName="email" placeholder="Msp" />
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="loginForm.get('email').hasError('required') && !loginForm.get('email').hasError('pattern') ">
+                                MSP is required
+                            </mat-error>
+                            <mat-error *ngIf="!loginForm.get('email').hasError('required') && loginForm.get('email').hasError('pattern') ">
+                                5 digits are allowed for msp
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" *ngIf="!ShowPassword" id="mysecretpassword" formControlName="password" placeholder="Password">
+                            <mat-icon matSuffix *ngIf="!ShowPassword" (click)="ShowPassword=true;" showHideTrigger="mysecretpassword">visibility</mat-icon>
+
+                            <input matInput *ngIf="ShowPassword" type="text" id="mysecretpassword" formControlName="password" placeholder="Password">
+                            <mat-icon matSuffix *ngIf="ShowPassword" (click)="ShowPassword=false;" showHideTrigger="mysecretpassword">visibility_off</mat-icon>
+                            <!-- <i matSuffix class="material-icons" showHideTrigger="password"></i> -->
+                            <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                                Password is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex-sb-m w-full p-t-15 p-b-20">
+                    <a routerLink="/authentication/signup">
+                        Referring Doctor Signup
+                      </a>
+                    <div>
+                        <a class="txt1" routerLink="/authentication/forgot-password">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button mat-flat-button color="primary" class="login100-form-btn" type="submit">Login</button>
+                </div>
+                <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                <div class="flex-sb-m w-full p-t-15 p-b-20">
+                    <div>
+                        <span> </span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- <div class="login100-more" style="background-image: url('assets/images/pages/bg-01.png');">
+            </div> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,210 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Dashboard</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/dashboard/main">
+                                <i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Dashboard 2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 l-bg-card1 order-info-box7">
+                    <div class="info-box7-block">
+                        <h5 class="m-b-15">All Appointments</h5>
+                        <h2 class="text-right"><i class="fas fa-calendar-check pull-left"></i><span>{{ApptCount.all}}</span></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 l-bg-card2 order-info-box7">
+                    <div class="info-box7-block">
+                        <h5 class="m-b-15">Pending Appointments</h5>
+                        <h2 class="text-right"><i class="far fa-calendar-check pull-left"></i><span>{{ApptCount.pending}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 l-bg-card3 order-info-box7">
+                    <div class="info-box7-block">
+                        <h5 class="m-b-15">New Requests</h5>
+                        <h2 class="text-right"><i class="fas fa-calendar-check pull-left"></i><span>{{ApptCount.confirm}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="info-box7 l-bg-card4 order-info-box7">
+                    <div class="info-box7-block">
+                        <h5 class="m-b-15">Free</h5>
+                        <h2 class="text-right"><i class="fab fa-calendar-check pull-left"></i><span>{{ApptCount.free}}</span></h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row Dashboard-Count">
+        <div class="col-12">
+            <div class="card">
+                <div class="header">
+                    <h2>On Call </h2>
+                    <br>
+                    <h2 *ngIf="Profile.firstname || Profile.lastname"><b>Dr. {{Profile.firstname + ' ' + Profile.lastname}}</b></h2>
+                    <h2 *ngIf="!Profile.firstname && !Profile.lastname"><b>No Doctor On Call</b></h2>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h3>Date</h3>
+                        </div>
+                        <div class="col-lg-9">
+                            {{NextOnCall.start_date | date:'dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-lg-3">
+                            <h3>Location</h3>
+                        </div>
+                        <div class="col-lg-9">
+                            <span *ngIf="NextOnCall.location!==''"> {{NextOnCall.location}}</span>
+
+                            <span *ngIf="NextOnCall.location===''"> {{NextOnCall.alternativelocation}}</span>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Surgeon Stats</h2>
+
+                        </div>
+                        <div class="body">
+                            <mat-table #table [dataSource]="doctorstat" matSort class="mat-cell">
+                                <!-- Checkbox Column -->
+                                <!-- <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+        </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
+        </mat-checkbox>
+    </mat-cell>
+</ng-container> -->
+                                <!-- ID Column -->
+                                <!-- <ng-container matColumnDef="doctor_id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.doctor_id}}</mat-cell>
+</ng-container> -->
+                                <ng-container matColumnDef="profilepic">
+                                    <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-10'"> Image </mat-header-cell>
+                                    <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-10"> <img [src]="row.profilepic" />
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Name}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="TotalApt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.TotalApt}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Pending">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Pending</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Pending}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Confrimed">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Confrimed</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Confrimed}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Ackn">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Acknowledge</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.Ackn}}</mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                <!-- <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editCall(row)" [style.cursor]="'pointer'" matRipple>
+</mat-row> -->
+                            </mat-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Clinical Availability <span *ngIf="NextShift.length > 0">{{NextShift[0].start_date | date:'dd/MM/yyyy'}}</span></h2>
+                    <br>
+                    <h2 *ngIf="Profile.firstname || Profile.lastname"><b>Dr. {{Profile.firstname + ' ' + Profile.lastname}}</b></h2>
+                </div>
+                <div class="body">
+                    <!-- <div class="row">
+                        <div class="col-lg-3">
+                            <h3>Date</h3>
+                        </div>
+                        <div class="col-lg-9">
+                        </div>
+                    </div> -->
+                    <div class="row" *ngIf="NextShift.length > 0">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <h3><b>Clinic</b></h3>
+                                </div>
+                                <div class="col-lg-9">
+                                    <b>  Time</b>
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let Object of NextShift;">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <span *ngIf="Object.location!==''"> {{Object.location}}</span>
+
+                                            <span *ngIf="Object.location===''"> {{Object.alternativelocation}}</span>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            {{Object.start_date | date:'HH:mm' }} - {{Object.end_date | date:'HH:mm'}}
+                                        </div>
+                                        <div class="col-lg-4">
+                                            {{Object.no_of_patient}} Patients / 15 min
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" *ngIf="NextShift.length < 1">
+                        <div class="col-lg-12">
+                            No Availability of Doctor
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>

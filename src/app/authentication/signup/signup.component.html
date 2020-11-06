@@ -1,0 +1,115 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" [formGroup]="ReffererForm" (ngSubmit)="onSubmit()">
+                <span class="login100-form-title pb-5">
+                    <img src="assets/images/logo.png" class="img-fluid m-b-20" style="width: 100px;" />
+                    <br>
+                    <span style="font-size: 15px;;">ORRCA - Online Referral - Rapid Clinic Access</span>
+                <br> Register
+                </span>
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>First name</mat-label>
+                            <input matInput formControlName="first" required>
+                            <mat-error *ngIf="ReffererForm.get('first').hasError('required')">
+                                First name is required
+                            </mat-error>
+                            <mat-error *ngIf=" ReffererForm.controls['first'].hasError && !ReffererForm.get('first').hasError('required')">
+                                Numbers are not allowed in name
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>Last name</mat-label>
+                            <input matInput formControlName="last">
+                            <mat-error *ngIf=" ReffererForm.controls['last'].hasError">
+                                Numbers are not allowed in name
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mobile-prefix">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>Mobile</mat-label>
+                            <span style="margin-right:5px;" matPrefix>+1</span>
+                            <input matInput mask="(000) 000-0000" formControlName="mobile" type="text" required>
+                            <mat-error *ngIf="ReffererForm.get('mobile').hasError('required') || ReffererForm.controls['mobile'].hasError">
+                                Valid Mobile is required
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>Fax</mat-label>
+                            <span style="margin-right:5px;" matPrefix>+1</span>
+                            <input mask="(000) 000-0000" matInput formControlName="fax" type="text">
+                            <mat-error *ngIf=" ReffererForm.controls['fax'].hasError">
+                                Valid Fax is required
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" required>
+                            <mat-error *ngIf="ReffererForm.get('email').hasError('required')">
+                                Valid email is required
+                            </mat-error>
+                            <mat-error *ngIf="ReffererForm.get('email').hasError('email') && ReffererForm.get('email').touched">
+                                Please enter a valid email address
+                            </mat-error>
+                            <mat-error *ngIf="ReffererForm.get('email').hasError('isEmailUnique') && ReffererForm.get('email').touched">
+                                Email already registered
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                        <mat-form-field class="example-full-width " appearance="outline">
+                            <mat-label>MSP</mat-label>
+                            <input mask="00000" matInput formControlName="msp" placeholder="MSP" type="text">
+                            <mat-error *ngIf="ReffererForm.get('msp').hasError('required') || ReffererForm.get('msp').hasError('pattern') ">
+                                Msp 5 digit number Required
+                            </mat-error>
+                            <mat-error *ngIf="ReffererForm.get('msp').hasError('isMspUnique') ">
+                                Msp already registered
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+                <div class="flex-sb-m w-full p-t-15 p-b-20">
+                    <div>
+                        <span>Already Registered? <a routerLink="/authentication/signin">
+                Login
+              </a></span>
+                    </div>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button mat-flat-button color="primary" [disabled]="submitted" class="login100-form-btn" type="submit">
+            Register
+          </button>
+                </div>
+                <div class="text-center p-t-30 p-b-20">
+                    <div *ngIf="success" class="alert alert-success mt-3 mb-0">Added successfully. Please check your email.</div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

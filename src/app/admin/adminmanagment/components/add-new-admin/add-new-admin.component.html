@@ -1,0 +1,178 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Admin Management</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/dashboard/doctor/list-all">
+                                <i class="fas fa-home"></i> Admin List</a>
+                        </li>
+
+                        <li class="breadcrumb-item active">Add New</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>Add</strong> Admin</h2>
+                    </div>
+                    <div class="body">
+                        <form class="m-4" [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-lg-9">
+
+
+
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>First name</mat-label>
+                                                <input matInput formControlName="first" required>
+                                                <mat-error *ngIf="adminForm.get('first').hasError('required')">
+                                                    First name is required
+                                                </mat-error>
+                                                <mat-error *ngIf="adminForm.get('first').hasError('pattern')">
+                                                    Digits are not allowed
+                                                </mat-error>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>Last name</mat-label>
+                                                <input matInput formControlName="last">
+                                                <mat-error *ngIf="adminForm.get('last').hasError('pattern')">
+                                                    Digits are not allowed
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>Phone</mat-label>
+                                                <span style="margin-right:5px;" matPrefix>+1</span>
+                                                <input mask="(000) 000-0000" matInput formControlName="mobile" placeholder="Phone" type="text">
+
+                                                <mat-error *ngIf="adminForm.get('mobile').hasError">
+                                                    Valid Phone number is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>Fax</mat-label>
+                                                <span style="margin-right:5px;" matPrefix>+1</span>
+                                                <input matInput mask="(000) 000-0000" formControlName="fax" placeholder="Fax" type="text">
+                                                <mat-error *ngIf="adminForm.get('mobile').hasError">
+                                                    Valid Fax number is not valid
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>Email</mat-label>
+                                                <input matInput formControlName="email">
+                                                <mat-error *ngIf="adminForm.get('email').hasError('required')">
+                                                    Email is required
+                                                </mat-error>
+                                                <mat-error *ngIf="adminForm.get('email').hasError('email') ">
+                                                    Please enter a valid email address
+                                                </mat-error>
+                                                <mat-error *ngIf="adminForm.get('email').hasError('isEmailUnique') ">
+                                                    Email already registered
+                                                </mat-error>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                                <mat-label>MSP</mat-label>
+                                                <input mask="00000" matInput formControlName="msp" placeholder="MSP " type="text ">
+                                                <mat-error *ngIf="adminForm.get( 'msp').hasError( 'required') || adminForm.get( 'msp').hasError( 'pattern') ">
+                                                    5 digit number is Required
+                                                </mat-error>
+                                                <mat-error *ngIf="adminForm.get( 'msp').hasError( 'isMspUnique') ">
+                                                    MSP already registered
+                                                </mat-error>
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                                            <mat-form-field class="example-full-width " appearance="outline">
+                                                <mat-select matSelect formControlName="default_admin" apperance="outline">
+                                                    <mat-option value="true"> Set Default </mat-option>
+                                                    <mat-option value="false"> Remove Default </mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="adminForm.get( 'msp').hasError('default_admin')  ">
+                                                    Select an option
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 text-center ">
+                                            <button class="mr-3 " mat-raised-button color="primary">Save</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 p-t-15 ">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 ">
+
+                                        <div class="row ">
+                                            <div class="col-lg-12 text-center">
+                                                <img [src]="profilepic " class="img-fluid profile-pic-150 " />
+                                            </div>
+                                        </div>
+
+                                        <div class="row m-t-15 ">
+                                            <div class="col-lg-12 ">
+
+                                                <input type="file" (change)="selectFile($event) " />
+                                                <div *ngIf="currentFile && progress < 100" class="progress">
+                                                    <div class="progress-bar progress-bar-info progress-bar-striped " role="progressbar " attr.aria-valuenow="{{ progress }} " aria-valuemin="0 " aria-valuemax="100 " [ngStyle]="{ width: progress + '%'
+                                                    } ">
+                                                        {{ progress }}%
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="alert alert-light " role="alert ">{{ message }}</div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

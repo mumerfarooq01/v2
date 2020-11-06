@@ -1,0 +1,29 @@
+<div style="text-align:center" class="camera-action">
+    <div *ngIf="!cameraBlocked">
+        <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+            (initError)="handleInitError($event)">
+        </webcam>
+      <div class="m-t-5">
+        <button mat-flat-button color="primary" style="width: 150px; margin: 5px 10px 5px 10px;" (click)="triggerSnapshot()">
+          <mat-icon aria-label="Camera" class="col-white">photo_camera</mat-icon>
+          <span class="mdc-button__label">
+            Capture
+          </span>
+        </button>
+        <button *ngIf="multipleWebcamsAvailable" mat-stroked-button color="basic" style="width: 150px;  margin: 5px 10px 5px 10px;" [disabled]="cameraChanging" (click)="showNextWebcam(true);">
+          <mat-icon aria-label="Flip" class="col-blue-grey">camera_rear</mat-icon>
+          <span class="mdc-button__label">
+            Switch Camera
+          </span>
+        </button>
+      </div>
+    </div>
+  <div *ngIf="cameraBlocked">
+    <div class="alert alert-danger">
+      <h5>Camera Access is Blocked for this site</h5>
+      <p>In order to capture photos, please enable Camera Access for this site and refresh the page</p>
+    </div>
+
+
+  </div>
+</div>

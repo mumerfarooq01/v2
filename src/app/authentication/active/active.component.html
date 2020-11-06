@@ -1,0 +1,45 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <span class="login100-form-title pb-5">
+          Activate Account
+        </span>
+
+                <div class="row" *ngIf="hide">
+                    <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" formControlName="password" placeholder="Password">
+                            <mat-icon matSuffix>vpn_key</mat-icon>
+                            <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                                Password is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" *ngIf="hide">
+                    <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Confirm Password</mat-label>
+                            <input matInput type="password" formControlName="cnfirmpass" placeholder="Confirm Password">
+                            <mat-icon matSuffix>vpn_key</mat-icon>
+                            <mat-error *ngIf="loginForm.get('cnfirmpass').hasError('equalTo')">
+                                Does not Match Password
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn" *ngIf="hide">
+                    <button mat-flat-button color="primary" class="login100-form-btn" type="submit">
+            Activate
+          </button>
+                </div>
+                <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

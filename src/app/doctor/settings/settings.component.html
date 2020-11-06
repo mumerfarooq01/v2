@@ -1,0 +1,162 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Account Setting</h4>
+                        </li>
+
+
+                        <li class="breadcrumb-item active">Account Setting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                <div class="card" *ngIf="!doctorApptSetting">
+                    <div class="header">
+                        <h2>Booking Status Setting</h2>
+                    </div>
+                    <div class="body">
+                        <form class="m-4" [formGroup]="ApptSettingForm" (ngSubmit)="onSubmitNormal()">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <mat-label>Default Booking Status Setting</mat-label>
+                                        <mat-select matSelect formControlName="appointment_default_status" apperance="outline">
+                                            <mat-option value="Confirmed"> Confirmed </mat-option>
+                                            <mat-option value="Tentative"> Tentative </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="ApptSettingForm.get('appointment_default_status').hasError('required')">
+                                            Select Default Status
+                                        </mat-error>
+
+
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 text-center">
+                                    <button class="mr-3" [disabled]="Submitted" mat-raised-button color="primary">Update</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card" *ngIf="doctorApptSetting">
+                    <div class="header">
+                        <h2><strong>Appointment Status</strong> Setting</h2>
+                    </div>
+                    <div class="body">
+                        <form class="m-4" [formGroup]="ApptSettingAdvanceForm" (ngSubmit)="onSubmitDifferent()">
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <mat-label>WCB Appointment Default Status</mat-label>
+                                        <mat-select matSelect formControlName="appointment_wcp_status" apperance="outline">
+                                            <mat-option value="Confirmed"> Confirmed </mat-option>
+                                            <mat-option value="Tentative"> Tentative </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="ApptSettingAdvanceForm.get('appointment_wcp_status').hasError('required')">
+                                            Select Default Status for WCP
+                                        </mat-error>
+
+
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <mat-label>MSP Appointment Default Status</mat-label>
+                                        <mat-select matSelect formControlName="appointment_msp_status" apperance="outline">
+                                            <mat-option value="Confirmed"> Confirmed </mat-option>
+                                            <mat-option value="Tentative"> Tentative </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="ApptSettingAdvanceForm.get('appointment_msp_status').hasError('required') ">
+                                            Select Default Status for MSP
+                                        </mat-error>
+
+
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 text-center">
+                                    <button class="mr-3" [disabled]="Submitted" mat-raised-button color="primary">Update</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="card">
+                    <div class="header">
+                        <h2>Email Notification Setting</h2>
+                    </div>
+                    <div class="body">
+                        <form class="m-4" [formGroup]="NotificationSettingForm" (ngSubmit)="onSubmit()">
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                        <mat-label>Default Email Notification Setting</mat-label>
+                                        <mat-select matSelect formControlName="notification_setting" apperance="outline">
+                                            <mat-option value=""> -- SELECT -- </mat-option>
+                                            <mat-option value="All"> All Appointments </mat-option>
+                                            <mat-option value="Tentative"> Tentative Appointments </mat-option>
+                                            <mat-option value="No"> No Notification </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="NotificationSettingForm.get('notification_setting').hasError('required')">
+                                            Select notification option
+                                        </mat-error>
+
+
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 text-center">
+                                    <button class="mr-3" mat-raised-button color="primary">Update</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

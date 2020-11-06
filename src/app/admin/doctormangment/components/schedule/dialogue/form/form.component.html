@@ -1,0 +1,84 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    <div class="font-weight-bold p-t-5 font-17" *ngIf="!ShowMsg">
+                        {{dialogTitle}}</div>
+                    <div style="color:#dc3545;" class="font-weight-bold p-t-5 p-l-10 font-17" *ngIf="ShowMsg">
+                        You can set One Doctor ON CALL per day</div>
+                </div>
+            </div>
+        </div>
+        <button type="button" mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+    </div>
+    <div mat-dialog-content>
+        <h5 style="color:#dc3545;" *ngIf="ShowMsg" class="text-center m-t-20">You can set One Doctor ON CALL per day</h5>
+
+        <form class="register-form m-4" [formGroup]="calendarForm" (ngSubmit)="onSubmit()" *ngIf="!ShowMsg">
+            <!-- <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Schedule Type</mat-label>
+                        <mat-select formControlName="ScheduleType" required>
+                            <mat-option [value]="'Not Available'">
+                                Not Available
+                            </mat-option>
+                            <mat-error *ngIf="calendarForm.get('ScheduleType').hasError('required')">
+                                Select type
+                            </mat-error>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Select Doctor</mat-label>
+                        <mat-select (selectionChange)="CheckValidation()" formControlName="DoctorId" required>
+                            <mat-option [value]="ObjDoc.doctor_id" *ngFor="let ObjDoc of DoctorList; index as i;">
+                                {{ObjDoc.Name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="calendarForm.controls['DoctorId'].hasError('required')">
+                            Select Doctor
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row" *ngIf="calendarForm.controls['DoctorId'].value !=''">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Start date</mat-label>
+                        <input matInput formControlName="startDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate" placeholder="Choose a date" required>
+                        <mat-icon matSuffix [owlDateTimeTrigger]="startDate">today</mat-icon>
+                        <owl-date-time [pickerType]="'calendar'" #startDate></owl-date-time>
+                        <mat-error *ngIf="calendarForm.controls['startDate'].hasError('required')">
+                            Start Date Required
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.controls['startDate'].hasError('AlreadySlot')">
+                            Already Exist Required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12">
+                    <div class="example-button-row">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!calendarForm.valid && !submitted">Save</button>
+                        <button mat-raised-button color="warn" type="button" (click)="dialogRef.close()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
+                    <div class="example-button-row" *ngIf="showDeleteBtn">
+                        <button mat-mini-fab aria-label color="warn" type="button" (click)="deleteEvent()">
+              <mat-icon class="font-20">delete</mat-icon>
+            </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

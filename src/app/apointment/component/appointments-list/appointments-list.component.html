@@ -1,0 +1,194 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Appointment List</h4>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body table-responsive">
+                        <div>
+                            <div style="height: auto;">
+                              <div class="icon-button-demo pull-right">
+                                <button mat-mini-fab color="primary" (click)="RefreshData()">
+                                  <mat-icon class="col-white">refresh</mat-icon>
+                                </button>
+                              </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                                <label>Status</label>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-8">
+                                                <div class="row">
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 ">
+                                                        <label>
+                                                  <input type="checkbox" class="mat-checkbox example-margin mat-accent" [(ngModel)]="FilterAll"  #filterall (change)="applyFilterCheck($event,'all')">
+                                                  All  </label>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 ">
+                                                        <label>
+                                                  <input type="checkbox" class="mat-checkbox example-margin mat-accent" [(ngModel)]="FilterSearchP"  #filterpending (change)="applyFilterCheck($event,'pending')">
+                                                  Pending </label>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 ">
+                                                        <label>
+                                                <input type="checkbox" class="mat-checkbox example-margin mat-accent" [(ngModel)]="FilterSearchC"  #filterconfirm (change)="applyFilterCheck($event,'confirm')">
+                                                Confirmed / Tentative </label>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 ">
+                                                        <label>
+                                              <input type="checkbox" class="mat-checkbox example-margin mat-accent" [(ngModel)]="FilterSearchCa"  #filtercancel (change)="applyFilterCheck($event,'cancel')">
+                                              Cancelled </label>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 ">
+                                                        <label>
+                                              <input type="checkbox" class="mat-checkbox example-margin mat-accent" [(ngModel)]="FilterSearchAk"  #filterAck (change)="applyFilterCheck($event,'ack')">
+                                              Acknowledged </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                                <label>Date</label>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 ">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput #filter (click)="picker.open()" [matDatepicker]="picker" readonly (dateInput)="applyFilter($event)" placeholder="Choose a date">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 mb-2">
+                                                <label> Surgeon</label>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+                                                <mat-form-field class="example-full-width">
+                                                    <select matNativeControl #DoctorSelect (change)="applyFilter($event)">
+                                                    <option value=""> All Surgeons </option>
+                                                    <option value="{{item.doctor_id}}" *ngFor="let item of DoctorList;"> Dr. {{item.Name}}  </option>
+                                                    </select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 mb-2">
+                                                <label> Referring Doctor</label>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+                                                <mat-form-field class="example-full-width">
+                                                    <select matNativeControl #RefSelect (change)="applyFilter($event)">
+                                                    <option value=""> All Referring Doctors </option>
+                                                    <option value="{{citem.refferer_id}}" *ngFor="let citem of ReffererList;"> {{citem.Name}}  </option>
+                                                    </select>
+                                                </mat-form-field>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 mb-2">
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+                                                <button mat-flat-button style="width: 150px" color="primary" (click)="ExportDataExcel()">
+                                                  <mat-icon>file_upload</mat-icon>
+                                                  <span>Export</span>
+
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-table #table [dataSource]="data" matSort class="mat-cell">
+                                <!-- Checkbox Column -->
+                                <!-- <ng-container matColumnDef="select">
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
+                                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [ngClass]="'tbl-checkbox'">
+                                        </mat-checkbox>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container> -->
+                                <!-- ID Column -->
+                                <!-- <ng-container matColumnDef="doctor_id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.doctor_id}}</mat-cell>
+                                </ng-container> -->
+                                <!-- <ng-container matColumnDef="profilepic">
+                  <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-10'"> Image </mat-header-cell>
+                  <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-10"> <img [src]="row.profilepic" />
+                  </mat-cell>
+                </ng-container> -->
+                                <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef>Doctor</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.DoctorName}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="patient_name">
+                                    <mat-header-cell *matHeaderCellDef>Patient</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                      <div style="text-align: center" class="m-2">
+                                        <div>
+                                          <img style="max-height: 100px;" [src]="row.CardImage">
+                                        </div>
+                                        <div>
+                                          {{row.patient_name}}
+                                        </div>
+                                      </div>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="ReffererName">
+                                    <mat-header-cell *matHeaderCellDef>Referring Doctor</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.ReffererName}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="slot_start">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
+                                    <mat-cell *matCellDef="let row"><span *ngIf="row.slot_start!='' && row.slot_start!='0000-00-00 00:00:00'">{{row.slot_start | date:'dd/MM/yyyy HH:mm'}}</span> </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <span style="width: 120px" [ngClass]="{'label-warning': row.status=='cancelled' || row.status=='Cancelled'  , 'label-default': row.status=='Pending' || row.status=='pending' , 'label-info': row.status=='Confirmed' || row.status=='confirmed' || row.status=='tentative' ||  row.status=='Tentative','label-success': row.status=='Acknowledged'|| row.status=='acknowledged'}"
+                                            class=" label text-center">
+                                            {{row.status}}
+                                        </span>
+
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- actions -->
+                                <ng-container matColumnDef="actions">
+                                    <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let row; let i=index; " class="pr-0 ">
+                                        <button style="width: 100px;" mat-flat-button color="primary" routerLink="/appointment/details/{{row.id}}">View</button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns "></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns; "></mat-row>
+                                <!-- <mat-row *matRowDef="let row; columns: displayedColumns; " (click)="editCall(row) " [style.cursor]=" 'pointer' " matRipple>
+                                </mat-row> -->
+                            </mat-table>
+                            <!-- <div class="no-results " [style.display]="dataSource.renderedData.length==0 ? '' : 'none' ">
+                                No results
+                            </div> -->
+                            <mat-paginator #paginator [length]="resultsLength " [pageIndex]="0 " [pageSize]="50" [pageSizeOptions]="[5, 10, 25, 100] ">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

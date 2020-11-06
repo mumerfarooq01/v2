@@ -1,0 +1,656 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">New Appointment</h4>
+                        </li>
+
+
+                        <li class="breadcrumb-item active">Add New Appointment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix" *ngIf="ShowCurrent">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            <strong>Appointment </strong> </h2>
+
+                    </div>
+                    <div class="body Appiontment">
+                        <aw-wizard #wizard>
+                            <aw-wizard-step [stepTitle]="'Referring Doctor Details'">
+
+                                <div class="centered-content">
+
+                                    <form class="m-4" [formGroup]="firstFormGroup">
+                                        <ng-template matStepLabel> Referring Doctor Details</ng-template>
+                                        <div class="row p-t-50">
+                                            <div class="col-xl-4 col-lg-3 col-md-3 col-sm-3">
+
+                                            </div>
+                                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                                                <div class="">
+                                                    <h6>Name</h6>
+                                                    <mat-form-field class="example-full-width">
+                                                        <input matInput formControlName="firstname" readonly>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="">
+                                                    <h6>Mobile</h6>
+                                                    <mat-form-field class="example-full-width ">
+                                                        <span matPrefix>+1&nbsp;</span>
+                                                        <input matInput mask="(000) 000 0000" formControlName="mobile">
+                                                        <mat-error *ngIf="firstFormGroup.controls['mobile'].hasError  ">
+                                                            Valid mobile number required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="">
+                                                    <h6>MSP #</h6>
+                                                    <mat-form-field class="example-full-width ">
+                                                        <input matInput formControlName="msp" readonly required>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-xl-4 col-lg-3 col-md-3 col-sm-3"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="text-center">
+                                                    <button class="btn btn-primary btn-border-radius waves-effect" style="width: 100px;" [disabled]="!firstFormGroup.valid" awNextStep>Next</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </aw-wizard-step>
+                            <aw-wizard-step [stepTitle]="'Patient Details'">
+                                <div class="centered-content">
+                                    <div class="row p-t-25">
+                                        <!--                                        <div class="col-lg-12 text-center">-->
+                                        <!--                                            <h6>Upload Patient Demographics Sticker <br>OR<br> </h6>-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+
+                                        <div class="col-md-8">
+                                            <div class="m-t-15" *ngIf="PicturePatientCheck" style="display: none;">
+                                                <div class="text-center">
+                                                    <img [src]="PicturePatient" class="img-fluid" />
+                                                </div>
+                                            </div>
+                                            <div class="m-t-15" *ngIf="PicturePatientCheck" style="display: none;">
+
+                                                <div class="text-center">
+                                                    <input type="file" (change)="selectFile($event)" />
+                                                    <div *ngIf="currentFile && progress > 0 && progress < 100" class="progress">
+                                                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: progress + '%' }">
+                                                            {{ progress }}%
+                                                        </div>
+                                                    </div>
+                                                    <div class="alert alert-light" role="alert">{{ message }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center" *ngIf="PicturePatientCheck">
+                                                <h5>Upload Patient Demographics Sticker</h5>
+                                            </div>
+
+
+                                            <div class="justify-content-md-center" *ngIf="!TakePicture">
+                                                <div class="text-center">
+                                                    <div class="text-center" *ngIf="patientDemoSticker">
+                                                        <img style="max-width: 90%" [src]="patientDemoSticker.imageAsDataUrl" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="" *ngIf="TakePicture && PicturePatientCheck">
+                                                <div class="text-center">
+                                                    <app-camera (pictureTaken)="handleImage($event)"></app-camera>
+                                                </div>
+                                            </div>
+                                            <div class="text-center" *ngIf="PicturePatientCheck && patientDemoSticker">
+                                                <div class="text-center m-t-10">
+                                                    <button mat-flat-button (click)="discardImage()" color="warn" *ngIf="!TakePicture">
+                                              <mat-icon aria-label="Delete" class="col-white">cached</mat-icon>
+                                              Retake Picture
+                                            </button>
+                                                </div>
+                                            </div>
+                                            <div class="m-t-15" *ngIf="!PicturePatientCheck">
+
+                                                <div class="text-center">
+                                                    <h5>Input Patient Information Manually</h5>
+                                                    <p> OR </p>
+                                                </div>
+
+
+                                                <div class="m-t-10 text-center">
+                                                    <button mat-flat-button color="primary" (click)="UploadPickEnable()" style="width: 130px; white-space: initial; line-height: 20px; padding-top: 10px; padding-bottom: 10px;">
+                                              <mat-icon aria-label="Camera" class="col-white">photo_camera</mat-icon>
+                                              <br>
+                                              <span class="mdc-button__label">
+                                                Capture Patient Demo Sticker
+                                              </span>
+                                            </button>
+                                                </div>
+                                            </div>
+                                            <div class="m-t-15" *ngIf="PicturePatientCheck">
+                                                <div class="text-center">
+                                                    <p class="text-center"> OR </p>
+                                                    <button mat-flat-button color="primary" (click)="UploadPickEnable()" style="width: 130px; white-space: initial; line-height: 20px; padding-top: 10px; padding-bottom: 10px;">
+                                              <mat-icon aria-label="Camera" class="col-white">create</mat-icon>
+                                              <br>
+                                              <span class="mdc-button__label">
+                                                Enter Patient Data Manually
+                                              </span>
+                                            </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2"></div>
+
+                                    </div>
+                                    <div class="row justify-content-md-center">
+
+                                        <div class="col-lg-6">
+                                            <form [formGroup]="secondFormGroup" class="m-4">
+                                                <ng-template matStepLabel>STEP 2 Patient Details</ng-template>
+
+
+                                                <div class="" *ngIf="!PicturePatientCheck">
+                                                    <div class="">
+                                                        <h6>First Name</h6>
+                                                        <mat-form-field class="example-full-width ">
+
+                                                            <input matInput formControlName="patient_first_name">
+                                                            <mat-error *ngIf="secondFormGroup.controls['patient_first_name'].hasError('required')  ">
+                                                                First name Required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-20" *ngIf="!PicturePatientCheck">
+                                                    <div class="">
+                                                        <h6>Last Name</h6>
+                                                        <mat-form-field class="example-full-width ">
+
+                                                            <input matInput formControlName="patient_last_name">
+                                                            <mat-error *ngIf="secondFormGroup.controls['patient_last_name'].hasError('required')  ">
+                                                                Last name Required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                </div>
+                                                <div class="m-t-20" *ngIf="!PicturePatientCheck">
+                                                    <div class="">
+                                                        <h6>Date of Birth</h6>
+                                                        <mat-form-field class="example-full-width ">
+
+                                                            <input matInput [matDatepicker]="picker" [max]="maxDob" [matDatepickerFilter]="maxDobFilter" (click)="picker.open()" formControlName="patient_dob">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker touchUi #picker></mat-datepicker>
+
+                                                            <mat-error *ngIf="secondFormGroup.controls['patient_dob'].hasError('required') ">
+                                                                Select Valid Date of Birth
+                                                            </mat-error>
+                                                            <mat-error *ngIf="secondFormGroup.controls['patient_dob'].hasError('max') ">
+                                                                Date of Birth can not be in the future
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-20" *ngIf="!PicturePatientCheck">
+                                                    <div class="">
+                                                        <h6>PHN</h6>
+                                                        <mat-form-field class="example-full-width ">
+                                                            <input mask="0000000000" matInput formControlName="phn">
+                                                            <mat-hint>if PHN# not available, input 9999999999 ( 10 9's) and specify alternate Healthcare Insurance ID in the "Reason for Referral" Text Box..</mat-hint>
+                                                            <mat-error *ngIf="secondFormGroup.controls['phn'].hasError ">
+                                                                Valid 10 Digit Provincial Health Number is required
+                                                            </mat-error>
+
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-25" *ngIf="!PicturePatientCheck">
+                                                    <div class="">
+                                                        <h6>Phone</h6>
+                                                        <mat-form-field class="example-full-width ">
+
+                                                            <span matPrefix>+1&nbsp;</span>
+                                                            <input mask="(000) 000 0000" matInput formControlName="patient_phone">
+                                                            <mat-error *ngIf="secondFormGroup.controls['patient_phone'].hasError  ">
+                                                                Valid Phone Number is required
+                                                            </mat-error>
+
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-20">
+                                                    <div class="">
+                                                        <h6>Site Location *</h6>
+                                                        <mat-form-field class="example-full-width ">
+                                                            <mat-select matSelect (ngModelChange)="SelectValueChange($event)" formControlName="sitelocation" apperance="outline">
+                                                                <mat-option value=""> -- SELECT -- </mat-option>
+                                                                <mat-option value="ERH"> ERH </mat-option>
+                                                                <mat-option value="PAH"> PAH </mat-option>
+                                                                <mat-option value="RCH"> RCH </mat-option>
+                                                                <mat-option value="SMH"> SMH </mat-option>
+                                                                <!--                                                          <mat-option value="LMH"> LMH </mat-option>-->
+                                                                <mat-option value="Other"> Other </mat-option>
+                                                            </mat-select>
+                                                            <mat-error *ngIf="secondFormGroup.controls['sitelocation'].hasError('required')  ">
+                                                                Select Location
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-20" *ngIf="secondFormGroup.controls['sitelocation'].value=='Other'">
+                                                    <div class="">
+                                                        <h6>Other Location *</h6>
+                                                        <mat-form-field class="example-full-width ">
+                                                            <input matInput formControlName="alternatelocation">
+                                                            <!-- <mat-error *ngIf="secondFormGroup.controls['alternatelocation'].hasError('Onefield') ">
+                            Field Required
+                          </mat-error> -->
+                                                            <mat-error *ngIf="secondFormGroup.controls['alternatelocation'].hasError('required')  ">
+                                                                Alternative location required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                </div>
+                                                <div class="m-t-20">
+                                                    <div class="">
+                                                        <h6>Reason for Referral *</h6>
+                                                        <mat-form-field class="example-full-width ">
+
+                                                            <textarea matInput formControlName="reason"></textarea>
+                                                            <mat-error *ngIf="secondFormGroup.controls['reason'].hasError('required')  ">
+                                                                Problem Details are required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="m-t-20">
+                                                    <div class="">
+                                                        <h6> WCB or MSP *</h6>
+                                                        <!--                                                      <mat-form-field class="example-full-width ">-->
+                                                        <!--                                                        <mat-select matSelect formControlName="wbc" apperance="outline">-->
+                                                        <!--                                                          <mat-option value=""> &#45;&#45; SELECT &#45;&#45; </mat-option>-->
+                                                        <!--                                                          <mat-option value="WCB"> WCB </mat-option>-->
+                                                        <!--                                                          <mat-option value="MSP"> MSP </mat-option>-->
+                                                        <!--                                                        </mat-select>-->
+                                                        <!--                                                        <mat-error *ngIf="secondFormGroup.controls['wbc'].hasError('required') ">-->
+                                                        <!--                                                          This field is mandatory-->
+                                                        <!--                                                        </mat-error>-->
+                                                        <!--                                                      </mat-form-field>-->
+                                                        <mat-radio-group formControlName="wbc">
+                                                            <mat-radio-button class="example-margin" value="MSP">MSP</mat-radio-button>
+                                                            <mat-radio-button class="example-margin" value="WCB">WCB</mat-radio-button>
+                                                            <mat-error *ngIf="secondFormGroup.controls['wbc'].hasError('required')  ">
+                                                                <small>MSP or WCB is required</small>
+                                                            </mat-error>
+                                                        </mat-radio-group>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <button class="btn btn-outline-primary waves-effect m-r-10" style="width: 100px;" awPreviousStep> Back </button>
+                                            <button class="btn btn-primary btn-border-radius waves-effect m-l-10" style="width: 100px;" [disabled]="!secondFormGroup.valid  || (TakePicture && patientDemoSticker===null )" awNextStep>Next</button>
+                                        </div>
+                                        <div class="col-lg-2 text-center">
+
+
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+                            </aw-wizard-step>
+
+                            <aw-wizard-step [stepTitle]="'Patient Reports'">
+                                <div class="centered-content">
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <h4> Patient Chart & Additional Information/Photos</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+
+                                        <div class="col-md-8">
+
+                                            <div class="">
+                                                Please provide pictures of the following:
+                                                <ul>
+                                                    <li>
+                                                        • Patient Chart
+                                                    </li>
+                                                    <li>
+                                                        • Injuries (If appropriate)
+                                                    </li>
+                                                    <li>
+                                                        • Additional Relevant Information
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="m-t-10 col-red">
+                                                <strong>Important: Copy of patient chart is REQUIRED. If an image of the chart
+                                          is NOT submitted, you MUST fax a copy to the scheduled office/clinic or the appointment will
+                                          be cancelled</strong>
+                                            </div>
+
+                                            <div class="m-t-10 font-italic">
+                                                <strong>Note:</strong> Maximum of five (5) Images are allowed
+                                            </div>
+
+                                            <div class="m-t-25" *ngIf="Report.length < 5">
+                                                <div class="text-center">
+                                                    <app-camera (pictureTaken)="handleImageReport($event)"></app-camera>
+                                                </div>
+                                            </div>
+                                            <div class="m-t-10">
+                                                <span *ngFor="let Obj of Report; index as i">
+                                            <mat-card style="max-width: 17%; padding: 5px" class="m-l-5 m-r-5 d-inline-block">
+                                            <img [src]="Obj" class="img-fluid"/>
+                                            <mat-card-actions class="text-center" style="padding: 0px">
+                                              <div fxLayout="row">
+                                                <button mat-icon-button color="warn" (click)="$event.stopPropagation()" (click)="DeleteReport(i)">
+                                                  <mat-icon>cancel</mat-icon>
+                                                </button>
+                                              </div>
+                                            </mat-card-actions>
+                                          </mat-card>
+                                          </span>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <button class="btn btn-outline-primary waves-effect m-r-10" style="width: 100px;" awPreviousStep>Back</button>
+                                            <button class="btn btn-primary btn-border-radius waves-effect m-l-10" style="width: 100px;" awNextStep>Next</button>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </aw-wizard-step>
+                            <aw-wizard-step [stepTitle]="'Review Appointment'" (stepEnter)="EnterFinalStep($event)">
+
+                                <div class="row">
+                                    <div class="col-lg-12 Appiontment-detail">
+
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h3>Patient Details
+                                                    <!-- <button mat-raised-button size="small" color="primary" class="m-l-10 material-cust-small-button">
+
+
+                                              Edit
+
+                                          </button> -->
+                                                </h3>
+                                            </div>
+                                            <div class="col-lg-9 col-md-3 col-sm-3">
+                                                <a href="{{apointmentDetails.CardImage}}" target="_blank">
+                                                    <img style="height:150px;" [src]="apointmentDetails.CardImage" class="img-fluid" />
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Name</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>{{apointmentDetails.patient_first_name}} {{apointmentDetails.patient_last_name}}</p>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>PHN</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p> {{apointmentDetails.phn}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Date of Birth</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p *ngIf="apointmentDetails.patient_dob !='' && apointmentDetails.patient_dob !='0000-00-00' && apointmentDetails.patient_dob != null">{{apointmentDetails.patient_dob | date:"M/d/yyyy"}} </p>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Phone</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p> {{apointmentDetails.patient_phone}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Reason For Referral</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p> {{apointmentDetails.details}} </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="Report.length > 0">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Patient Charts</h5>
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-3">
+                                                <div class="row">
+                                                    <div class="col-lg-2 text-center" *ngFor="let Obj  of Report;">
+
+                                                        <a href="{{Obj}}" target="_blank"><img [src]="Obj" class="img-fluid" /></a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 Text-center" *ngIf="Report.length > 0 && UploadPatientReport != true">
+
+                                                <img style="height:150px;" src="assets/images/loading.gif" class="img-fluid" />
+                                                <h4>Uploading Reports Please Wait</h4>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h3>Appointment Details</h3>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Status</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <span class=" m-l-10 label " [ngClass]="{'label-warning': apointmentDetails.status=='canceled' || apointmentDetails.status=='Canceled'  , 'label-default': apointmentDetails.status=='Pending' || apointmentDetails.status=='pending' , 'label-info': apointmentDetails.status=='Confirmed' || apointmentDetails.status=='confirmed', 'label-success': apointmentDetails.status=='Acknowledged' || apointmentDetails.status=='acknowledged'}">{{apointmentDetails.status}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Appointment Location</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p *ngIf="apointmentDetails.DoctorLocation!='Other'"> {{apointmentDetails.DoctorLocation}} </p>
+                                                <p *ngIf="apointmentDetails.DoctorLocation=='Other'"> {{apointmentDetails.DoctorLocationAlter}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Appointment Date </h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>{{apointmentDetails.slot_date | date:"dd/MM/yyyy"}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Appointment Time </h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>{{apointmentDetails.slot_date | date:"HH:mm"}}</p>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h3>On-Call Surgeon Details</h3>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Name</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p><span *ngIf="apointmentDetails.DoctorName!=''">Dr.</span> {{apointmentDetails.DoctorName}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>MSP</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p> {{apointmentDetails.DoctorMsp}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Phone</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p *ngIf="apointmentDetails.DoctorMobile!='' && apointmentDetails.DoctorMobile!= null">+1 {{apointmentDetails.DoctorMobile | mask: '(000) 000-0000'}} </p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h3>Referring Doctor Details</h3>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Name</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>Dr. {{apointmentDetails.ReffererName}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>MSP</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>{{apointmentDetails.ReffererMsp}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Phone</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p *ngIf="apointmentDetails.ReffererMobile!=''">+1{{apointmentDetails.ReffererMobile | mask: '(000) 000-0000'}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Site</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <div class="row">
+                                                    <div class="col-lg-12 ">
+                                                        <p *ngIf="apointmentDetails.sitelocation != 'Other'"> {{apointmentDetails.sitelocation}} </p>
+                                                        <p *ngIf="apointmentDetails.sitelocation == 'Other'">{{apointmentDetails.alternatelocation}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <h5>Booking Time</h5>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-sm-3">
+                                                <p>{{apointmentDetails.timestamp | date:"dd/MM/yyyy HH:mm"}}</p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </aw-wizard-step>
+                        </aw-wizard>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix" *ngIf="!ShowCurrent">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+
+
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <h6 class="text-center">No Doctor Available</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <a class="btn btn-primary" [routerLink]="['/appointment/refferer']">Done</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

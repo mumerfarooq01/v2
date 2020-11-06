@@ -1,0 +1,145 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 p-l-10 font-17" *ngIf="!ShowMsg">
+                            {{dialogTitle}} {{calendarForm.get('Date').value | date:'dd/M/yyyy'}}</div>
+                        <div style="color:#dc3545;" class="font-weight-bold p-t-5 p-l-10 font-17" *ngIf="ShowMsg">
+                            Doctors cannot add availability for on-call days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="calendarForm" (ngSubmit)="onSubmit()" *ngIf="!ShowMsg">
+
+            <div class="row" *ngIf="f.DoctorId.value !=''">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Select Date</mat-label>
+                        <input matInput formControlName="Date" [owlDateTimeTrigger]="Date" [owlDateTime]="Date" placeholder="Choose a date" required>
+                        <mat-icon matSuffix [owlDateTimeTrigger]="Date">today</mat-icon>
+                        <owl-date-time [pickerType]="'calendar'" #Date></owl-date-time>
+                        <mat-error *ngIf="calendarForm.get('Date').hasError('required')">
+                            Date Required
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.get('Date').hasError('AlreadySlot')">
+                            Already On Call
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row" *ngIf="f.DoctorId.value !=''">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>Start Time</mat-label>
+                        <input matInput formControlName="startDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate" placeholder="Choose time" required>
+                        <mat-icon matSuffix [owlDateTimeTrigger]="startDate">today</mat-icon>
+                        <owl-date-time [pickerType]="'timer'" #startDate></owl-date-time>
+                        <mat-error *ngIf="calendarForm.get('startDate').hasError('required')">
+                            Start Time Required
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.get('startDate').hasError('AlreadySlot')">
+                            Time Slot Already Exist
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                        <mat-label>End Time</mat-label>
+                        <input matInput formControlName="endDate" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate" placeholder="Choose time" required>
+                        <mat-icon matSuffix [owlDateTimeTrigger]="endDate">today</mat-icon>
+                        <owl-date-time [pickerType]="'timer'" #endDate></owl-date-time>
+                        <mat-error *ngIf="calendarForm.get('endDate').hasError('required')">
+                            End Time Required
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.get('endDate').hasError('AlreadySlot')">
+                            Time Slot Already Exist
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.get('endDate').hasError('EndDateIssue')">
+                            Start time can not be smaller than End time
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row" *ngIf="f.DoctorId.value !=''">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                        <mat-label>Select Location</mat-label>
+                        <mat-select matSelect (selectionChange)="ChangeValidate()" formControlName="location" apperance="outline">
+                            <mat-option value=""> -- SELECT -- </mat-option>
+                            <mat-option value="JPOC 2nd Floor Clinic"> JPOC 2nd Floor Clinic </mat-option>
+                            <mat-option value="JPOC 3rd Floor Clinic"> JPOC 3rd Floor Clinic </mat-option>
+                            <mat-option value="JPOC 4th Floor Minor Surgery"> JPOC 4th Floor Minor Surgery </mat-option>
+                            <mat-option value="RCH Cast Clinic"> RCH Cast Clinic </mat-option>
+                            <mat-option value="Other"> Other </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="calendarForm.get('location').hasError('required')  ">
+                            Select Location
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12" *ngIf="calendarForm.get('location').value === 'Other' ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                        <mat-label>Other Location</mat-label>
+                        <input matInput formControlName="alternatelocation">
+                        <mat-error *ngIf="calendarForm.get('alternatelocation').hasError('required')  ">
+                            Select Location
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                        <mat-label>Patients / 15 Min</mat-label>
+                        <mat-select matSelect formControlName="no_of_patient" apperance="outline">
+                            <mat-option value=""> -- SELECT -- </mat-option>
+                            <mat-option value="1"> 1 </mat-option>
+                            <mat-option value="2"> 2 </mat-option>
+                            <mat-option value="4"> 4 </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="calendarForm.get('no_of_patient').hasError('required')  ">
+                            No of Patients required
+                        </mat-error>
+                        <mat-error *ngIf="calendarForm.get('no_of_patient').hasError('min')  ">
+                            No of Patients must be greater than 1
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 multi-select">
+                    <ng-multiselect-dropdown [placeholder]="'Link With On-Calls'" [settings]="dropdownSettings" [data]="dropdownList" formControlName="linked" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12">
+                    <div class="example-button-row">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="CheckForm">
+
+                            Save
+                        </button>
+                        <button mat-raised-button color="warn" (click)="dialogRef.close()" tabindex="-1">Cancel</button>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
+                    <div class="example-button-row" *ngIf="showDeleteBtn">
+                        <button mat-mini-fab aria-label color="warn" (click)="deleteEvent()">
+                <mat-icon class="font-20">delete</mat-icon>
+              </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

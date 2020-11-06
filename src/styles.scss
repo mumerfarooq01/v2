@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+
+webcam video {
+    max-width: 90%;
+    height: 100%
+}
+
+.multi-select .dropdown-list {
+    position: inherit !important;
+}
+
+ng-multiselect-dropdown .dropdown-up{
+  border-bottom: 5px solid #adadad !important;
+  border-left: 5px solid transparent !important;
+  border-right: 5px solid transparent !important;
+}
+
+ng-multiselect-dropdown .dropdown-down{
+  border-top: 5px solid #adadad !important;
+  border-left: 5px solid transparent !important;
+  border-right: 5px solid transparent !important;
+}
+
+.fc-event-done {
+    background-color: gray;
+    border-color: gray;
+}
+
+.linked-details {
+    font-weight: normal;
+    width: 100%;
+}
+
+.mat-dialog-content {
+    max-height: 100vh !important;
+}
+
+.mat-dialog-content .addContainer {
+    // overflow-y: scroll;
+}
+
+.addContainer.modalContainer .Schedule-Details {
+    overflow-y: scroll !important;
+}
+
+.linked-details .mat-icon {
+    font-size: 15px;
+    cursor: pointer;
+}

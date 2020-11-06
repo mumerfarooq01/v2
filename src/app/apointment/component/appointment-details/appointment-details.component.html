@@ -1,0 +1,249 @@
+<section class="content">
+    <div class="container-fluid">
+        <!--        <div class="block-header">-->
+        <!--            <div class="row">-->
+        <!--                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
+        <!--                    <ul class="breadcrumb breadcrumb-style ">-->
+        <!--                        <li class="breadcrumb-item">-->
+        <!--                            <h4 class="page-title">Admin Management</h4>-->
+        <!--                        </li>-->
+        <!--                        <li class="breadcrumb-item bcrumb-1">-->
+        <!--                            <a routerLink="/dashboard/doctor/list-all">-->
+        <!--                                <i class="fas fa-home"></i> Admin List</a>-->
+        <!--                        </li>-->
+
+        <!--                        <li class="breadcrumb-item active">Add New</li>-->
+        <!--                    </ul>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <div class="card">
+                    <div class="body ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="white-box">
+                                    <h3>
+                                        <b>Appointment Details</b>
+                                    </h3>
+                                    <span class="m-t-10 p-30 font-16 label" [ngClass]="{'label-warning': apointmentDetails.status=='cancelled' || apointmentDetails.status=='Cancelled'  , 'label-default': apointmentDetails.status=='Pending' || apointmentDetails.status=='pending' , 'label-info': apointmentDetails.status=='Confirmed' || apointmentDetails.status=='Tentative' || apointmentDetails.status=='tentative' || apointmentDetails.status=='confirmed', 'label-success': apointmentDetails.status=='Acknowledged' || apointmentDetails.status=='acknowledged'}">{{apointmentDetails.status}}</span>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button *ngIf="apointmentDetails.status !== 'cancelled' && apointmentDetails.status !== 'Cancelled'" (click)="EditPatientDetails()" mat-flat-button color="primary" class="pull-right">
+                                  Edit
+                                </button>
+                                            <h4>Patient Details</h4>
+                                            <div class="text-center">
+                                                <a href="{{apointmentDetails.CardImage}}" target="_blank">
+                                                    <img style="height:150px;" [src]="apointmentDetails.CardImage" class="img-fluid" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Name</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            {{apointmentDetails.patient_first_name}} {{apointmentDetails.patient_last_name}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>PHN</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            {{apointmentDetails.phn}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Date of Birth</h6>
+                                        </div>
+
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div *ngIf="apointmentDetails.patient_dob !='' && apointmentDetails.patient_dob !='0000-00-00' && apointmentDetails.patient_dob != null">{{apointmentDetails.patient_dob | date:"dd/MM/yyyy"}}</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Phone</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div *ngIf="apointmentDetails.patient_phone!='' && apointmentDetails.patient_phone!= null">+1 {{apointmentDetails.patient_phone | mask: '(000) 000-0000'}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Reason for Referral</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div> {{apointmentDetails.details}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="apointmentDetails.Attachments && apointmentDetails.Attachments.length > 0">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Patient Charts</h6>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-lg-2 text-center" *ngFor="let item  of apointmentDetails.Attachments;">
+                                                    <a href="{{item.url}}" target="_blank"><img [src]="item.url" class="img-fluid" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h4>Appointment Details</h4>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Appointment Location</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div *ngIf="apointmentDetails.DoctorLocation!='Other'"> {{apointmentDetails.DoctorLocation}} </div>
+                                            <div *ngIf="apointmentDetails.DoctorLocation=='Other'"> {{apointmentDetails.DoctorLocationAlter}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Appointment Date </h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>{{apointmentDetails.slot_date | date:"dd/MM/yyyy"}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Appointment Time </h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>{{apointmentDetails.slot_date | date:"HH:mm"}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="apointmentDetails.status == 'Canceled'">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Cancel Reason</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>{{apointmentDetails.cancel_reason }}</div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h4>Surgeon Details</h4>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Name</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div><span *ngIf="apointmentDetails.DoctorName!=''">Dr.</span> {{apointmentDetails.DoctorName}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>MSP</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div> {{apointmentDetails.DoctorMsp}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Phone</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div *ngIf="apointmentDetails.DoctorMobile!='' && apointmentDetails.DoctorMobile!= null">+1 {{apointmentDetails.DoctorMobile | mask: '(000) 000-0000'}} </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h5>Referring Doctor Details</h5>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Name</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>Dr. {{apointmentDetails.ReffererName}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>MSP</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>{{apointmentDetails.ReffererMsp}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Phone</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div *ngIf="apointmentDetails.ReffererMobile!=''">+1{{apointmentDetails.ReffererMobile | mask: '(000) 000-0000'}} </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Site</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div class="row">
+                                                <div class="col-lg-12 ">
+                                                    <div *ngIf="apointmentDetails.sitelocation != 'Other'"> {{apointmentDetails.sitelocation}} </div>
+                                                    <div *ngIf="apointmentDetails.sitelocation == 'Other'">{{apointmentDetails.alternatelocation}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <h6>Booking Time</h6>
+                                        </div>
+                                        <div class="col-lg-9 col-md-9 col-sm-3">
+                                            <div>{{apointmentDetails.timestamp | date:"dd/MM/yyyy HH:mm"}}</div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row" *ngIf="CheckUserType()">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 text-center">
+                                            <button *ngIf="apointmentDetails.status !== 'acknowledged' && apointmentDetails.status !== 'Acknowledged' " mat-raised-button class="m-r-10" color="primary" (click)="Acknowledge()">
+                                  <span class="mdc-button__label">Acknowledge</span>
+                                </button>
+                                            <button *ngIf="apointmentDetails.status !== 'Canceled' && apointmentDetails.status !== 'canceled' " mat-raised-button class="m-l-10" color="warn" (click)="CancelAppt()">
+                                  <span class="mdc-button__label">Cancel</span>
+                                </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
